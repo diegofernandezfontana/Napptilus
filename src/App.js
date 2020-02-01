@@ -1,19 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
 
 import configStore from './Store/configStore';
 import sagas from './sagas/index';
-
 import MainRouter from './Router';
 
 const store = configStore();
-
 store.runSaga(sagas);
 
 const App = () => {
   return (
-    <Fragment>
+    <Provider store={store}>
       <MainRouter />
-    </Fragment>
+    </Provider>
   );
 };
 
