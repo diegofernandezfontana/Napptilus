@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import configStore from './Store/configStore';
 import sagas from './sagas/index';
 
-import CardsList from './Components/CardsList';
-import Router from './Router';
+import MainRouter from './Router';
+
 const store = configStore();
 
 store.runSaga(sagas);
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <Router />
-    </div>
+    <Fragment>
+      <MainRouter />
+    </Fragment>
   );
-}
+};
 
 export default App;

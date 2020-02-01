@@ -1,21 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
+import Navbar from '../Components/Navbar';
 import Main from '../Pages/Main';
 import UmpaLumpaProfile from '../Pages/UmpaLumpaProfile';
 
 const MainRouter = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/:id">
-          <UmpaLumpaProfile />
-        </Route>
-        <Route path="/*">
-          <Main />
-        </Route>
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Navbar />
+      <Route path="/:id" component={UmpaLumpaProfile} />
+      <Route path="/*" component={Main} />
+    </BrowserRouter>
   );
 };
 
