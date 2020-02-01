@@ -1,11 +1,12 @@
 import { takeLatest, put, select } from 'redux-saga/effects';
 import axios from 'axios';
 
+import { getUrl } from './utils/getUrl';
+import { handleLocalStorage } from '../../Global/sagas';
+
 import { actionTypes as at } from './constants';
 import { getOompaLoompaSuccess, getOompaLoompaError, setCurrentPage } from './actions';
 import { selectCurrentPage } from './selectors';
-
-import { getUrl } from './utils/getUrl';
 
 function* sagaHandleRequest() {
   const currentPage = yield select(selectCurrentPage());
@@ -19,17 +20,16 @@ function* sagaHandleRequest() {
     };
 
     const data = yield fetchOompaLoompa();
-    yield console.log(data, 'DATA');
     yield put(getOompaLoompaSuccess({ oompaLompaData: data }));
   } catch (e) {
     yield put(getOompaLoompaError);
   }
 }
-
 function* sagaHandleGetOompaLoompaSucces() {
   const currentPage = yield select(selectCurrentPage());
 
   yield put(setCurrentPage({ newPage: currentPage + 1 }));
+  yield handleLocalStorage();
 }
 
 export function* oompaLoompasWatcher() {
