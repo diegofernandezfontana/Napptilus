@@ -1,8 +1,4 @@
-const initialState = {
-  umpaLumpas: [],
-  selectedUmpaLumpaId: 0,
-  currentPage: 0,
-};
+const initialState = {};
 
 const mainReducer = (state = initialState, action) => {
   switch (action) {
