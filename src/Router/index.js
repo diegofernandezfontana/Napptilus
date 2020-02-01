@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Main from '../Pages/Main';
 import UmpaLumpaProfile from '../Pages/UmpaLumpaProfile';
 
-export default function App() {
+const MainRouter = () => {
   return (
     <Router>
       <Switch>
@@ -17,4 +17,6 @@ export default function App() {
       </Switch>
     </Router>
   );
-}
+};
+
+export default MainRouter;
