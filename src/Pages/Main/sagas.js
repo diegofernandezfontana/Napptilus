@@ -5,8 +5,14 @@ import { getUrl } from './utils/getUrl';
 import { handleLocalStorage } from '../../Global/sagas';
 
 import { actionTypes as at } from './constants';
-import { getOompaLoompaSuccess, getOompaLoompaError, setCurrentPage } from './actions';
-import { selectCurrentPage } from './selectors';
+import {
+  getOompaLoompaSuccess,
+  getOompaLoompaError,
+  setCurrentPage,
+  setSelectedOompaLoompa,
+  setOompaLoompaExists,
+} from './actions';
+import { selectCurrentPage, selectAllOompaLoompas } from './selectors';
 
 function* sagaHandleRequest() {
   const currentPage = yield select(selectCurrentPage());
@@ -19,8 +25,8 @@ function* sagaHandleRequest() {
       });
     };
 
-    const data = yield fetchOompaLoompa();
-    yield put(getOompaLoompaSuccess({ oompaLompaData: data }));
+    const oompaLompaData = yield fetchOompaLoompa();
+    yield put(getOompaLoompaSuccess({ oompaLompaData }));
   } catch (e) {
     yield put(getOompaLoompaError);
   }
@@ -32,7 +38,23 @@ function* sagaHandleGetOompaLoompaSucces() {
   yield handleLocalStorage();
 }
 
+function* sagaHandleSelectOompaLoompa(action) {
+  const { id } = action;
+  const allOompaLoompas = yield select(selectAllOompaLoompas());
+  const oompaLoompaIndex = allOompaLoompas.findIndex(oompa => oompa.id === +id);
+
+  const oompaLoompa = allOompaLoompas[oompaLoompaIndex];
+
+  if (oompaLoompa) {
+    yield put(setOompaLoompaExists(true));
+    yield put(setSelectedOompaLoompa({ oompaLoompa }));
+  } else {
+    yield put(setOompaLoompaExists(false));
+  }
+}
+
 export function* oompaLoompasWatcher() {
   yield takeLatest(at.GET_OOMPALOOMPAS_REQUEST, sagaHandleRequest);
   yield takeLatest(at.GET_OOMPALOOMPAS_SUCCESS, sagaHandleGetOompaLoompaSucces);
+  yield takeLatest(at.GET_SELECTED_OOMPALOOMPA_BY_ID, sagaHandleSelectOompaLoompa);
 }
