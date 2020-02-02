@@ -8,4 +8,10 @@ const selectCurrentPage = state =>
 const selectAllOompaLoompas = state =>
   createSelector(getOompaLompasDomain(state), oompaLompasDomain => oompaLompasDomain.oompaLoompas);
 
-export { selectAllOompaLoompas, selectCurrentPage };
+const selectSelectedOompaLoompa = state =>
+  createSelector(getOompaLompasDomain(state), oompaLompasDomain => oompaLompasDomain.selectedOompaLoompa);
+
+const selectIsLoadingInit = state =>
+  createSelector(getOompaLompasDomain(state), oompaLompasDomain => oompaLompasDomain.isLoadingInit);
+
+export { selectAllOompaLoompas, selectCurrentPage, selectSelectedOompaLoompa, selectIsLoadingInit };
