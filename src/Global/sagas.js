@@ -7,7 +7,7 @@ import { actionTypes as at } from './constants';
 import { setLshOompaLoompasToState } from './actions';
 
 import { selectAllOompaLoompas, selectCurrentPage } from '../Pages/Main/selectors';
-
+import { setIsLoadingInit } from '../Pages/Main/actions';
 export function* handleLocalStorage() {
   const allOompaLoompas = yield select(selectAllOompaLoompas());
 
@@ -42,6 +42,8 @@ function* sagaSetLsToStore() {
   if (lsTimeStamp > dateNow && lshOompaLoompas.length && currentPage > 1) {
     yield put(setLshOompaLoompasToState({ lshOompaLoompas: lshOompaLoompas }));
   }
+
+  yield put(setIsLoadingInit(false));
 }
 
 export function* globalWatcher() {
