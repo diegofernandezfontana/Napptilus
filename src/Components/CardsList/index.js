@@ -6,12 +6,16 @@ import Card from '../Card';
 import { Wrapper } from './styles';
 
 const CardsList = props => {
-  const { allOompaLoompas, onHandleRedirect } = props;
+  const { allOompaLoompas, onHandleRedirect, filterValue } = props;
 
   const renderCards = () => {
-    return allOompaLoompas.map(oompaLoompa => {
-      return <Card oompaLoompa={oompaLoompa} key={oompaLoompa.name} onHandleRedirect={onHandleRedirect} />;
-    });
+    return allOompaLoompas
+      .filter(oompaLoompa => {
+        return oompaLoompa.first_name.toLowerCase().includes(filterValue.toLowerCase());
+      })
+      .map(oompaLoompa => {
+        return <Card oompaLoompa={oompaLoompa} key={oompaLoompa.name} onHandleRedirect={onHandleRedirect} />;
+      });
   };
 
   return (

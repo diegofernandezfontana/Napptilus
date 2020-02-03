@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import CardsList from '../../Components/CardsList';
 import { useInfiniteScroll } from '../../utils/useInfiniteScroll';
+import SearchBar from '../../Components/SearchBar';
 
 import { getOompaLoompaRequest, setSelectedOompaLoompa } from './actions';
 import { selectCurrentPage, selectAllOompaLoompas } from './selectors';
@@ -13,6 +14,7 @@ import { selectCurrentPage, selectAllOompaLoompas } from './selectors';
 const MainPage = props => {
   const { itemRef, isDisplayed } = useInfiniteScroll();
   const { onGetOompaLoompaRequest, allOompaLoompas, onSetSelectedOompaLoompa } = props;
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     if (isDisplayed) {
@@ -22,16 +24,23 @@ const MainPage = props => {
 
   const handleRedirect = oompaLoompa => () => {
     const { history } = props;
-
+    const { id } = oompaLoompa;
     onSetSelectedOompaLoompa({ oompaLoompa });
-    history.push('/2');
+    history.push(`/${id}`);
+  };
+
+  const handleSearch = inputValue => {
+    setSearchValue(inputValue);
   };
 
   return (
     <Fragment>
       <h1>Main Page</h1>
-      <CardsList allOompaLoompas={allOompaLoompas} onHandleRedirect={handleRedirect} />
-      <footer ref={itemRef}>loadMore</footer>
+      <br />
+      <SearchBar searchValue={searchValue} onChange={handleSearch} />
+      <br />
+      <CardsList allOompaLoompas={allOompaLoompas} onHandleRedirect={handleRedirect} filterValue={searchValue} />
+      <footer ref={itemRef} />
     </Fragment>
   );
 };
